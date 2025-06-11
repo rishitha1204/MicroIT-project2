@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Number Guessing Game</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .game-container {
+      background-color: #1c1c1c;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.1);
+      text-align: center;
+      width: 350px;
+    }
+
+    h2 {
+      color: #00d4ff;
+    }
+
+    input[type="number"] {
+      padding: 10px;
+      font-size: 18px;
+      width: 100px;
+      border: none;
+      border-radius: 10px;
+      text-align: center;
+      margin: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background-color: #00d4ff;
+      color: #000;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background-color: #00a6cc;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 18px;
+      min-height: 24px;
+    }
+
+    .attempts {
+      margin-top: 10px;
+      font-size: 16px;
+      color: #ffb703;
+    }
+
+    .reset {
+      margin-top: 20px;
+      background-color: #ff595e;
+      color: #fff;
+    }
+
+    .reset:hover {
+      background-color: #cc474a;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <h2>🎯 Number Guessing Game</h2>
+    <p>Guess a number between 1 and 100</p>
+    <input type="number" id="userGuess" min="1" max="100" />
+    <button onclick="checkGuess()">Guess</button>
+
+    <div class="message" id="message"></div>
+    <div class="attempts" id="attemptsLeft"></div>
+
+    <button class="reset" onclick="resetGame()">Reset Game</button>
+  </div>
+
+  <script>
+    let secretNumber = Math.floor(Math.random() * 100) + 1;
+    let attempts = 7;
+
+    function checkGuess() {
+      const guess = Number(document.getElementById("userGuess").value);
+      const message = document.getElementById("message");
+      const attemptsDisplay = document.getElementById("attemptsLeft");
+
+      if (!guess || guess < 1 || guess > 100) {
+        message.textContent = "⛔ Please enter a number between 1 and 100!";
+        return;
+      }
+
+      if (attempts > 0) {
+        if (guess === secretNumber) {
+          message.textContent = `🎉 Correct! The number was ${secretNumber}`;
+          message.style.color = "#00ff00";
+          attemptsDisplay.textContent = "";
+        } else if (guess < secretNumber) {
+          message.textContent = "📉 Too low! Try a higher number.";
+          message.style.color = "#ffb703";
+        } else {
+          message.textContent = "📈 Too high! Try a lower number.";
+          message.style.color = "#ffb703";
+        }
+        attempts--;
+        attemptsDisplay.textContent = `Attempts Left: ${attempts}`;
+
+        if (attempts === 0 && guess !== secretNumber) {
+          message.textContent = `❌ Game Over! The number was ${secretNumber}`;
+          message.style.color = "#ff595e";
+        }
+      }
+    }
+
+    function resetGame() {
+      secretNumber = Math.floor(Math.random() * 100) + 1;
+      attempts = 7;
+      document.getElementById("userGuess").value = "";
+      document.getElementById("message").textContent = "";
+      document.getElementById("attemptsLeft").textContent = "";
+    }
+  </script>
+</body>
+</html>
